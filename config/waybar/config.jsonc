@@ -46,7 +46,8 @@
             "default": "\udb80\udf86",
             "spotify": "",
             "firefox": "\udb80\ude39"
-        }
+        },
+        "on-click": "~/.config/waybar/music-popup.py"
     },
     "custom/prev": {
         "exec": "echo '\udb81\udcae'",

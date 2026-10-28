@@ -5,6 +5,16 @@
 
 A minimal black and white Hyprland desktop: Waybar with popups, Fuzzel, Mako, Wofi menus and a custom Fastfetch.
 
+## Screenshots
+
+![Desktop](screenshots/desktop.png)
+
+| | |
+|---|---|
+| ![Fastfetch](screenshots/fastfetch.png) | ![Launcher](screenshots/fuzzel.png) |
+| ![Wi-Fi menu](screenshots/wifi.png) | ![Storage menu](screenshots/storage.png) |
+| ![RAM and btop](screenshots/btop-ram.png) | ![Battery menu](screenshots/battery.png) |
+
 ## What's included
 
 - **Waybar** (bottom bar): workspaces 1-3, music title and controls, clock popup with calendar, volume, Bluetooth, Wi-Fi, CPU, RAM, storage and battery popups, and a power menu

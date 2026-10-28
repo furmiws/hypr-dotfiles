@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json, os, shutil, subprocess, sys
 
-XOFF = "-60"
+XOFF = "-10"
 
 if subprocess.run(["pgrep", "-x", "wofi"], capture_output=True).returncode == 0:
     subprocess.run(["pkill", "-x", "wofi"])
@@ -16,7 +16,7 @@ def human(n):
 def pick(lines, prompt, height=380):
     r = subprocess.run(
         ["wofi", "--dmenu", "--hide-search", "--location", "5", "--xoffset", XOFF,
-         "--width", "380", "--height", str(height), "--prompt", prompt],
+         "--width", "440", "--height", str(height), "--prompt", prompt],
         input="\n".join(lines) + "\n", capture_output=True, text=True)
     return r.stdout.strip()
 
@@ -50,9 +50,9 @@ for d, ext in walk(data["blockdevices"]):
     name = name[:14]
     if mp:
         t, u, _ = shutil.disk_usage(mp)
-        line = f"● {name:<14} {human(u)} / {human(t)}   {mp}"
+        line = f"● {name:<14} {human(u)} / {human(t)}   {'(click to eject)' if ext else mp}"
     else:
-        line = f"○ {name:<14} {human(int(d.get('size') or 0))}   (not mounted)"
+        line = f"○ {name:<14} {human(int(d.get('size') or 0))}   (click to mount)"
     actions[line] = (dev, mp, ext)
     (external if ext else internal).append((mp != "/", name, line))
 

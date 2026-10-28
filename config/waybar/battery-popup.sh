@@ -6,7 +6,7 @@ cur=$(powerprofilesctl get)
 mark() { [ "$cur" = "$1" ] && echo "● $2" || echo "○ $2"; }
 choice=$(printf "󰁹  Battery: %s%% (%s)\n%s\n%s\n%s\n" "$bat" "$st" \
   "$(mark power-saver 'Power saver')" "$(mark balanced 'Balanced')" "$(mark performance 'Performance')" \
-  | wofi --dmenu --hide-search --prompt Battery --location 5 --width 280 --height 200)
+  | wofi --dmenu --hide-search --prompt Battery --location 5 --xoffset -10 --width 280 --height 200)
 case "$choice" in
   *"Power saver"*) powerprofilesctl set power-saver ;;
   *Balanced*) powerprofilesctl set balanced ;;

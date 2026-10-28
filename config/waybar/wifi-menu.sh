@@ -1,9 +1,9 @@
 #!/bin/bash
-pgrep -x wofi >/dev/null && { pkill -x wofi; exit; }
+pgrep -x fuzzel >/dev/null && { pkill -x fuzzel; exit; }
 
 XOFF=-385
-menu() { wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 380 --prompt "$1"; }
-msg() { printf '%s\n' "$1" | wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 --prompt Wi-Fi >/dev/null; }
+menu() { $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 380 --prompt "$1"; }
+msg() { printf '%s\n' "$1" | $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 --prompt Wi-Fi >/dev/null; }
 
 # Wi-Fi is off: only offer to turn it on
 if [ "$(nmcli radio wifi)" != "enabled" ]; then
@@ -41,7 +41,7 @@ case "$choice" in
   "Turn Wi-Fi off") nmcli radio wifi off; exit ;;
   "Scan for networks")
     nmcli dev wifi rescan >/dev/null 2>&1
-    printf 'Scanning for networks...\n' | timeout 3 wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 >/dev/null
+    printf 'Scanning for networks...\n' | timeout 3 $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 >/dev/null
     exec "$0" ;;
 esac
 
@@ -67,7 +67,7 @@ if [ -n "${open[$ssid]}" ]; then
 fi
 
 # new secured network: ask for the password
-pass=$(wofi --dmenu --password --location 5 --xoffset "$XOFF" --width 320 --height 80 --prompt "Password for $ssid" </dev/null)
+pass=$($HOME/.config/waybar/dmenu.sh --dmenu --password --location 5 --xoffset "$XOFF" --width 320 --height 80 --prompt "Password for $ssid" </dev/null)
 [ -z "$pass" ] && exit
 if ! nmcli dev wifi connect "$ssid" password "$pass" >/dev/null 2>&1; then
   nmcli connection delete id "$ssid" >/dev/null 2>&1

@@ -1,5 +1,5 @@
 #!/bin/bash
-pgrep -x wofi >/dev/null && { pkill -x wofi; exit; }
+pgrep -x fuzzel >/dev/null && { pkill -x fuzzel; exit; }
 XOFF=-205
 
 total=$(free -h | awk '/^Mem:/{print $3" / "$2}')
@@ -9,4 +9,4 @@ list=$(ps -eo rss=,comm= \
   | awk -F'\t' '{ if ($1>=1048576) s=sprintf("%.1f GB",$1/1048576); else s=sprintf("%d MB",$1/1024); printf "%-9s %s\n", s, $2 }')
 
 { printf 'Memory  %s\n' "$total"; printf '────────────────────\n'; printf '%s\n' "$list"; } \
-  | wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 340 --prompt RAM >/dev/null
+  | $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 340 --prompt RAM >/dev/null

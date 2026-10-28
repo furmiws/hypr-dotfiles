@@ -84,3 +84,7 @@ window#waybar {
 
 #battery.warning { color: #cfcfcf; }
 #battery.critical { background: #ffffff; color: #000000; }
+
+#network.disabled {
+    color: #6b6b6b;
+}

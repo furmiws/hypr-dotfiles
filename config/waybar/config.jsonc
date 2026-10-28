@@ -101,10 +101,13 @@
     "network": {
         "format-wifi": " Furry",
         "format-ethernet": "\udb80\ude00 Furry",
-        "format-disconnected": "\udb81\uddaa Offline",
+        "format-disconnected": "\uf1eb Offline",
         "tooltip-format-wifi": "{essid} ({signalStrength}%)",
         "tooltip-format-ethernet": "{ifname}: {ipaddr}",
-        "on-click": "~/.config/waybar/wifi-menu.sh"
+        "on-click": "~/.config/waybar/wifi-menu.sh",
+        "format": "\uf1eb Furry",
+        "format-linked": "\uf1eb Furry",
+        "format-disabled": "\uf1eb off"
     },
     "cpu": {
         "interval": 2,

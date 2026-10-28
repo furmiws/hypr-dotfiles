@@ -1,9 +1,9 @@
 #!/bin/bash
-pgrep -x wofi >/dev/null && { pkill -x wofi; exit; }
+pgrep -x fuzzel >/dev/null && { pkill -x fuzzel; exit; }
 
 XOFF=-470
-menu() { wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 340 --prompt "$1"; }
-msg() { printf '%s\n' "$1" | wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 --prompt Bluetooth >/dev/null; }
+menu() { $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 340 --prompt "$1"; }
+msg() { printf '%s\n' "$1" | $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 --prompt Bluetooth >/dev/null; }
 
 # Bluetooth is off: only offer to turn it on
 if ! bluetoothctl show | grep -q "Powered: yes"; then
@@ -35,7 +35,7 @@ case "$choice" in
   "Open Bluetooth manager") blueman-manager & exit ;;
   "Scan for devices")
     ( bluetoothctl --timeout 6 scan on >/dev/null 2>&1 & )
-    printf 'Scanning for devices...\n' | timeout 6 wofi --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 >/dev/null
+    printf 'Scanning for devices...\n' | timeout 6 $HOME/.config/waybar/dmenu.sh --dmenu --hide-search --location 5 --xoffset "$XOFF" --width 320 --height 90 >/dev/null
     exec "$0" ;;
 esac
 

@@ -3,8 +3,8 @@ import json, os, shutil, subprocess, sys
 
 XOFF = "-10"
 
-if subprocess.run(["pgrep", "-x", "wofi"], capture_output=True).returncode == 0:
-    subprocess.run(["pkill", "-x", "wofi"])
+if subprocess.run(["pgrep", "-x", "fuzzel"], capture_output=True).returncode == 0:
+    subprocess.run(["pkill", "-x", "fuzzel"])
     sys.exit()
 
 def human(n):
@@ -15,7 +15,7 @@ def human(n):
 
 def pick(lines, prompt, height=380):
     r = subprocess.run(
-        ["wofi", "--dmenu", "--hide-search", "--location", "5", "--xoffset", XOFF,
+        [os.path.expanduser("~/.config/waybar/dmenu.sh"), "--dmenu", "--hide-search", "--location", "5", "--xoffset", XOFF,
          "--width", "440", "--height", str(height), "--prompt", prompt],
         input="\n".join(lines) + "\n", capture_output=True, text=True)
     return r.stdout.strip()

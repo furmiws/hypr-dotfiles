@@ -33,3 +33,7 @@ Existing configs are backed up as `*.bak-<date>` before anything is replaced.
 - On machines without a battery, the battery module is removed automatically.
 - The Wi-Fi, Bluetooth, RAM and storage popups are positioned by guesswork. If one is off, change the `XOFF` value at the top of its script in `~/.config/waybar/`.
 - Replace `config/fastfetch/logo.png` with your own image if you like.
+
+## Wallpaper
+
+The wallpaper isn't included (it isn't mine to share). I use [this one](https://www.wallpaperflare.com/ambient-dark-snow-fog-night-wallpaper-ykgif/download). Download it and save it as `~/.config/wallpaper/wallpaper.png`.

@@ -13,7 +13,7 @@ command -v pacman >/dev/null || { echo "This installer is for Arch-based systems
 say "Installing packages"
 sudo pacman -S --needed --noconfirm waybar playerctl ttf-jetbrains-mono-nerd kitty wofi fuzzel mako \
   libnotify power-profiles-daemon bluez bluez-utils blueman networkmanager btop udisks2 \
-  fastfetch python git base-devel
+  fastfetch swaybg python git base-devel
 
 say "Waybar workspace-click fix"
 if pacman -Q waybar-git >/dev/null 2>&1; then
@@ -54,6 +54,9 @@ if ! ls /sys/class/power_supply/BAT* >/dev/null 2>&1; then
   say "No battery found, removing the battery module"
   python3 -c 'import json,sys; p=sys.argv[1]; c=json.load(open(p)); c["modules-right"]=[m for m in c["modules-right"] if m!="battery"]; json.dump(c,open(p,"w"),indent=4)' "$CFG/waybar/config.jsonc"
 fi
+
+mkdir -p "$CFG/wallpaper"
+[ -f "$CFG/wallpaper/wallpaper.png" ] || echo "Put your wallpaper at ~/.config/wallpaper/wallpaper.png"
 
 say "Hyprland config"
 LUA="$CFG/hypr/hyprland.lua"

@@ -20,4 +20,8 @@ hl.window_rule({
 })
 
 hl.bind("SUPER + D", hl.dsp.exec_cmd("fuzzel"))
+hl.on("hyprland.start", function()
+    hl.exec_cmd("swaybg -i $HOME/.config/wallpaper/wallpaper.png -m fill")
+end)
+
 -- <<< dotfiles-setup <<<

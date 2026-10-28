@@ -25,7 +25,7 @@ A minimal black and white Hyprland desktop: Waybar with popups, Fuzzel, Mako, Wo
 
 ## Requirements
 
-- Arch Linux (or an Arch-based distro) with pacman
+- Arch Linux (or an Arch-based distro) with pacman [I will add support for other Linux distributions when I have the time and tried them]
 - Hyprland 0.55+ using the Lua config (`~/.config/hypr/hyprland.lua`)
 - Working audio (PipeWire)
 

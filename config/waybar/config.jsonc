@@ -1,0 +1,146 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 30,
+    "spacing": 4,
+    "reload_style_on_change": true,
+    "modules-left": [
+        "hyprland/workspaces",
+        "mpris",
+        "custom/prev",
+        "custom/playpause",
+        "custom/next"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "pulseaudio",
+        "bluetooth",
+        "network",
+        "cpu",
+        "memory",
+        "disk",
+        "battery",
+        "custom/power"
+    ],
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "all-outputs": false,
+        "show-special": false,
+        "persistent-workspaces": {
+            "*": [
+                1,
+                2,
+                3
+            ]
+        }
+    },
+    "mpris": {
+        "format": "{player_icon} {title}",
+        "title-len": 25,
+        "ellipsis": "\u2026",
+        "tooltip-format": "{artist} - {title}",
+        "player-icons": {
+            "default": "\udb80\udf86",
+            "spotify": "",
+            "firefox": "\udb80\ude39"
+        }
+    },
+    "custom/prev": {
+        "exec": "echo '\udb81\udcae'",
+        "exec-if": "playerctl status >/dev/null 2>&1",
+        "interval": 2,
+        "format": "{}",
+        "on-click": "playerctl previous",
+        "tooltip": false
+    },
+    "custom/playpause": {
+        "exec": "[ \"$(playerctl status)\" = Playing ] && echo '\udb80\udfe4' || echo '\udb81\udc0a'",
+        "exec-if": "playerctl status >/dev/null 2>&1",
+        "interval": 1,
+        "format": "{}",
+        "on-click": "playerctl play-pause",
+        "tooltip": false
+    },
+    "custom/next": {
+        "exec": "echo '\udb81\udcad'",
+        "exec-if": "playerctl status >/dev/null 2>&1",
+        "interval": 2,
+        "format": "{}",
+        "on-click": "playerctl next",
+        "tooltip": false
+    },
+    "clock": {
+        "format": "{:%H:%M}",
+        "on-click": "~/.config/waybar/clock-popup.sh",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "\uf026 muted",
+        "format-icons": {
+            "default": [
+                "\uf027",
+                "\uf027",
+                "\uf028"
+            ]
+        },
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "scroll-step": 5
+    },
+    "bluetooth": {
+        "format": "\uf293 on",
+        "format-connected": "\uf293 {device_alias}",
+        "format-off": "\uf294 off",
+        "format-disabled": "\uf294 off",
+        "tooltip-format-connected": "{device_enumerate}",
+        "on-click": "~/.config/waybar/bluetooth-menu.sh"
+    },
+    "network": {
+        "format-wifi": " Furry",
+        "format-ethernet": "\udb80\ude00 Furry",
+        "format-disconnected": "\udb81\uddaa Offline",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}",
+        "on-click": "~/.config/waybar/wifi-menu.sh"
+    },
+    "cpu": {
+        "interval": 2,
+        "format": "\uf2db {usage}%",
+        "on-click": "kitty --class btop-popup -e btop"
+    },
+    "memory": {
+        "interval": 5,
+        "format": "\udb80\udf5b {used:0.1f}G",
+        "on-click": "~/.config/waybar/ram-menu.sh"
+    },
+    "disk": {
+        "interval": 30,
+        "path": "/",
+        "format": "\udb80\udeca {used} / {total}",
+        "on-click": "~/.config/waybar/disk-menu.py"
+    },
+    "battery": {
+        "states": {
+            "warning": 25,
+            "critical": 10
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "\uf0e7 {capacity}%",
+        "format-icons": [
+            "\uf244",
+            "\uf243",
+            "\uf242",
+            "\uf241",
+            "\uf240"
+        ],
+        "on-click": "~/.config/waybar/battery-popup.sh"
+    },
+    "custom/power": {
+        "format": "",
+        "on-click": "~/.config/waybar/power-menu.sh",
+        "tooltip": false
+    }
+}

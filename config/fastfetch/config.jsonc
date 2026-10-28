@@ -1,0 +1,40 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "type": "kitty-direct",
+        "source": "~/.config/fastfetch/logo.png",
+        "width": 28,
+        "height": 14,
+        "padding": { "top": 1, "left": 2, "right": 4 }
+    },
+    "display": {
+        "separator": "  "
+    },
+    "modules": [
+        { "type": "break" },
+
+        { "type": "custom", "format": "╭─────────────╮", "outputColor": "38;2;180;142;255" },
+        { "type": "command", "text": "whoami", "key": "│ \uf007 User      │", "keyColor": "38;2;180;142;255" },
+        { "type": "custom", "format": "├─────────────┤", "outputColor": "38;2;180;142;255" },
+        { "type": "os", "key": "│ \uf17c OS        │", "keyColor": "38;2;180;142;255" },
+        { "type": "kernel", "key": "│ \uf013 Kernel    │", "keyColor": "38;2;180;142;255" },
+        { "type": "wm", "key": "│ \uf2d0 WM        │", "keyColor": "38;2;180;142;255" },
+        { "type": "packages", "key": "│ \uf1b2 Packages  │", "keyColor": "38;2;180;142;255" },
+        { "type": "custom", "format": "╰─────────────╯", "outputColor": "38;2;180;142;255" },
+
+        { "type": "break" },
+
+        { "type": "custom", "format": "╭─────────────╮", "outputColor": "38;2;255;255;255" },
+        { "type": "memory", "key": "│ \uf538 Memory    │", "keyColor": "38;2;255;255;255" },
+        { "type": "disk", "key": "│ \uf0a0 Disk      │", "keyColor": "38;2;255;255;255" },
+        { "type": "swap", "key": "│ \uf0ec Swap      │", "keyColor": "38;2;255;255;255" },
+        { "type": "cpu", "key": "│ \uf2db CPU       │", "keyColor": "38;2;255;255;255" },
+        { "type": "gpu", "key": "│ \uf108 GPU       │", "keyColor": "38;2;255;255;255", "hideType": "integrated" },
+        { "type": "host", "key": "│ \uf109 Host      │", "keyColor": "38;2;255;255;255" },
+        { "type": "battery", "key": "│ \uf240 Battery   │", "keyColor": "38;2;255;255;255" },
+        { "type": "custom", "format": "╰─────────────╯", "outputColor": "38;2;255;255;255" },
+
+        { "type": "break" },
+        { "type": "colors", "key": "", "symbol": "circle", "paddingLeft": 6 }
+    ]
+}

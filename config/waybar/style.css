@@ -1,0 +1,86 @@
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+#workspaces button {
+    padding: 0 10px;
+    margin: 4px 2px;
+    background: transparent;
+    color: #6b6b6b;
+    border-radius: 6px;
+}
+
+#workspaces button:hover {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+#workspaces button.active {
+    background: #ffffff;
+    color: #000000;
+}
+
+#workspaces button.urgent {
+    background: #4d4d4d;
+    color: #ffffff;
+}
+
+#mpris {
+    padding: 0 10px;
+    margin: 4px 2px;
+    background: #1a1a1a;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+#custom-prev,
+#custom-playpause,
+#custom-next {
+    padding: 0 10px;
+    margin: 4px 1px;
+    background: #1a1a1a;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+#custom-prev:hover,
+#custom-playpause:hover,
+#custom-next:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+#clock {
+    padding: 0 12px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#pulseaudio, #bluetooth, #network, #cpu, #memory, #disk, #battery, #custom-power {
+    padding: 0 10px;
+    margin: 4px 2px;
+    background: #1a1a1a;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+#pulseaudio:hover, #bluetooth:hover, #battery:hover, #custom-power:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+#pulseaudio.muted, #bluetooth.off, #bluetooth.disabled, #network.disconnected {
+    color: #6b6b6b;
+}
+
+#battery.warning { color: #cfcfcf; }
+#battery.critical { background: #ffffff; color: #000000; }

@@ -41,6 +41,7 @@ install_fedora() {
   say "Installing packages (Fedora)"
   sudo dnf install -y waybar playerctl kitty fuzzel mako libnotify power-profiles-daemon \
     bluez blueman NetworkManager btop udisks2 fastfetch swaybg python3 git curl unzip fontconfig
+  sudo dnf install -y hyprlock hypridle || echo "Install hyprlock and hypridle from your Hyprland COPR."
 
   if ! fc-list | grep -qi "JetBrainsMono Nerd"; then
     say "Installing JetBrainsMono Nerd Font"
@@ -102,6 +103,12 @@ if ! ls /sys/class/power_supply/BAT* >/dev/null 2>&1; then
   say "No battery found, removing the battery module"
   python3 -c 'import json,sys; p=sys.argv[1]; c=json.load(open(p)); c["modules-right"]=[m for m in c["modules-right"] if m!="battery"]; json.dump(c,open(p,"w"),indent=4)' "$CFG/waybar/config.jsonc"
 fi
+
+mkdir -p "$CFG/hypr"
+for f in hyprlock.conf hypridle.conf; do
+  [ -f "$CFG/hypr/$f" ] && cp "$CFG/hypr/$f" "$CFG/hypr/$f.bak-$STAMP"
+  cp "$DIR/hypr/$f" "$CFG/hypr/$f"
+done
 
 say "Hyprland config"
 LUA="$CFG/hypr/hyprland.lua"

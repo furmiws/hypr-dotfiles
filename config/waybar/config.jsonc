@@ -143,7 +143,7 @@
         "on-click": "~/.config/waybar/battery-popup.sh"
     },
     "custom/power": {
-        "format": "",
+        "format": "\uf011",
         "on-click": "~/.config/waybar/power-menu.sh",
         "tooltip": false
     }

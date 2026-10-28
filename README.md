@@ -22,6 +22,8 @@ A minimal black and white Hyprland desktop: Waybar with popups, Fuzzel, Mako, Wo
 - **Mako** notifications
 - **Wofi** styling for the popups
 - **Fastfetch** with a custom logo
+- **Hyprlock and Hypridle**: black lock screen (SUPER + L, or the power menu), locks after 5 minutes idle
+- Black window borders
 
 ## Requirements
 

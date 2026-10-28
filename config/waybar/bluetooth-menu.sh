@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 pgrep -x fuzzel >/dev/null && { pkill -x fuzzel; exit; }
 
 XOFF=-470

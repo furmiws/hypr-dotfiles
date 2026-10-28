@@ -25,7 +25,7 @@ A minimal black and white Hyprland desktop: Waybar with popups, Fuzzel, Mako, Wo
 
 ## Requirements
 
-- Arch Linux (or an Arch-based distro) with pacman [I will add support for other Linux distributions when I have the time and tried them]
+- Arch Linux (or Arch-based) with pacman. Fedora and NixOS are supported too, but **untested** (see below) [I will add support for other Linux distributions when I have the time and tried them]
 - Hyprland 0.55+ using the Lua config (`~/.config/hypr/hyprland.lua`)
 - Working audio (PipeWire)
 
@@ -47,3 +47,54 @@ Existing configs are backed up as `*.bak-<date>` before anything is replaced.
 ## Wallpaper
 
 The wallpaper isn't included (it isn't mine to share). I use [this one](https://www.wallpaperflare.com/ambient-dark-snow-fog-night-wallpaper-ykgif/download). Download it and save it as `~/.config/wallpaper/wallpaper.png`.
+
+## Other distros (untested)
+
+I use Arch, so these are best-effort and I haven't been able to test them. Issues and fixes are welcome.
+
+### Fedora
+
+Fedora doesn't ship Hyprland in its official repos, so it comes from a COPR. For example:
+
+    sudo dnf copr enable ashbuk/Hyprland-Fedora
+    sudo dnf install hyprland xdg-desktop-portal-hyprland
+
+This setup uses the Lua config, so you need **Hyprland 0.55 or newer** (check with `Hyprland --version`) and a `~/.config/hypr/hyprland.lua` (Hyprland creates one on first run). Then:
+
+    git clone https://github.com/furmiws/hypr-dotfiles.git
+    cd hypr-dotfiles
+    ./install.sh
+
+The installer uses `dnf` for everything else and downloads the JetBrainsMono Nerd Font. If clicking workspaces doesn't work, Fedora's Waybar may be too old for Lua configs; try the Waybar from the `nett00n/hyprland` COPR.
+
+### NixOS
+
+The installer can't manage packages on NixOS, so install them in your Nix config, then copy the config files with `--configs-only`.
+
+1. Add this to `/etc/nixos/configuration.nix` (adjust to taste) and run `sudo nixos-rebuild switch`:
+
+        { pkgs, ... }: {
+          programs.hyprland = { enable = true; withUWSM = true; };
+
+          environment.systemPackages = with pkgs; [
+            waybar playerctl kitty fuzzel mako libnotify btop fastfetch swaybg
+            blueman python3 git
+          ];
+          fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+
+          networking.networkmanager.enable = true;
+          hardware.bluetooth.enable = true;
+          services.blueman.enable = true;
+          services.power-profiles-daemon.enable = true;
+          services.udisks2.enable = true;
+        }
+
+2. Start Hyprland once so it creates `~/.config/hypr/hyprland.lua`, then:
+
+        git clone https://github.com/furmiws/hypr-dotfiles.git
+        cd hypr-dotfiles
+        ./install.sh --configs-only
+
+3. If your `hyprland.lua` is managed by Home Manager (a read-only symlink), the installer skips it. Copy the contents of `hypr/setup-block.lua` into your Nix config instead. Home Manager 26.05 and newer can generate Lua configs; see the [NixOS wiki page for Hyprland](https://wiki.nixos.org/wiki/Hyprland).
+
+If clicking workspaces doesn't work, your Waybar may not have the fix for Lua configs yet (Waybar PR #5013).

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # translates wofi-style arguments into fuzzel
 prompt="> "; xoff=0; width=320; height=300; pw=0
 while [ $# -gt 0 ]; do

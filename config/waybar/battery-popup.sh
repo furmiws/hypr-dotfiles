@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 pgrep -x fuzzel >/dev/null && { pkill -x fuzzel; exit; }
 bat=$(cat /sys/class/power_supply/BAT*/capacity | head -n1)
 st=$(cat /sys/class/power_supply/BAT*/status | head -n1)

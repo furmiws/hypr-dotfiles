@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if pgrep -f "class clock-popup" > /dev/null; then
     pkill -f "class clock-popup"
 else

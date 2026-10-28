@@ -4,39 +4,84 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CFG="$HOME/.config"
 STAMP="$(date +%Y%m%d-%H%M%S)"
+ONLY_CONFIGS=0
+[ "$1" = "--configs-only" ] && ONLY_CONFIGS=1
 
 say() { printf '\n\033[1m==> %s\033[0m\n' "$1"; }
 
-command -v pacman >/dev/null || { echo "This installer is for Arch-based systems (pacman)."; exit 1; }
 [ "$EUID" -eq 0 ] && { echo "Run this as your normal user, not root."; exit 1; }
 
-say "Installing packages"
-sudo pacman -S --needed --noconfirm waybar playerctl ttf-jetbrains-mono-nerd kitty wofi fuzzel mako \
-  libnotify power-profiles-daemon bluez bluez-utils blueman networkmanager btop udisks2 \
-  fastfetch swaybg python git base-devel
+install_arch() {
+  say "Installing packages (Arch)"
+  sudo pacman -S --needed --noconfirm waybar playerctl ttf-jetbrains-mono-nerd kitty fuzzel mako \
+    libnotify power-profiles-daemon bluez bluez-utils blueman networkmanager btop udisks2 \
+    fastfetch swaybg python git base-devel
 
-say "Waybar workspace-click fix"
-if pacman -Q waybar-git >/dev/null 2>&1; then
-  echo "waybar-git is already installed."
-else
-  read -rp "Install waybar-git from the AUR (fixes workspace clicking on Hyprland 0.55 Lua)? [Y/n] " ans
-  if [[ ! "$ans" =~ ^[Nn]$ ]]; then
-    if command -v yay >/dev/null 2>&1; then
-      yay -S --needed waybar-git
-    elif command -v paru >/dev/null 2>&1; then
-      paru -S --needed waybar-git
-    else
-      tmp="$(mktemp -d)"
-      git clone https://aur.archlinux.org/waybar-git.git "$tmp/waybar-git"
-      (cd "$tmp/waybar-git" && makepkg -si)
-      rm -rf "$tmp"
+  say "Waybar workspace-click fix"
+  if pacman -Q waybar-git >/dev/null 2>&1; then
+    echo "waybar-git is already installed."
+  else
+    read -rp "Install waybar-git from the AUR (fixes workspace clicking on Hyprland Lua configs)? [Y/n] " ans
+    if [[ ! "$ans" =~ ^[Nn]$ ]]; then
+      if command -v yay >/dev/null 2>&1; then
+        yay -S --needed waybar-git
+      elif command -v paru >/dev/null 2>&1; then
+        paru -S --needed waybar-git
+      else
+        tmp="$(mktemp -d)"
+        git clone https://aur.archlinux.org/waybar-git.git "$tmp/waybar-git"
+        (cd "$tmp/waybar-git" && makepkg -si)
+        rm -rf "$tmp"
+      fi
     fi
   fi
-fi
+}
 
-say "Enabling services"
-sudo systemctl enable --now bluetooth power-profiles-daemon || true
-systemctl is-enabled NetworkManager >/dev/null 2>&1 || sudo systemctl enable --now NetworkManager || true
+install_fedora() {
+  say "Installing packages (Fedora)"
+  sudo dnf install -y waybar playerctl kitty fuzzel mako libnotify power-profiles-daemon \
+    bluez blueman NetworkManager btop udisks2 fastfetch swaybg python3 git curl unzip fontconfig
+
+  if ! fc-list | grep -qi "JetBrainsMono Nerd"; then
+    say "Installing JetBrainsMono Nerd Font"
+    mkdir -p "$HOME/.local/share/fonts"
+    tmp="$(mktemp -d)"
+    if curl -fL -o "$tmp/jb.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip; then
+      unzip -oq "$tmp/jb.zip" -d "$HOME/.local/share/fonts/JetBrainsMonoNerd"
+      fc-cache -f
+    else
+      echo "Font download failed. Install JetBrainsMono Nerd Font by hand."
+    fi
+    rm -rf "$tmp"
+  fi
+
+  if ! command -v Hyprland >/dev/null 2>&1; then
+    echo
+    echo "Hyprland is not installed. Fedora has no official package, see the Fedora"
+    echo "section of the README for the COPR, then run this script again."
+  fi
+}
+
+enable_services() {
+  say "Enabling services"
+  sudo systemctl enable --now bluetooth power-profiles-daemon || true
+  systemctl is-enabled NetworkManager >/dev/null 2>&1 || sudo systemctl enable --now NetworkManager || true
+}
+
+if [ "$ONLY_CONFIGS" = 0 ]; then
+  if grep -qi '^ID=nixos' /etc/os-release 2>/dev/null; then
+    echo "NixOS detected: packages are managed by your Nix config (see the README)."
+    echo "To only copy the config files, run: ./install.sh --configs-only"
+    exit 1
+  elif command -v pacman >/dev/null 2>&1; then
+    install_arch; enable_services
+  elif command -v dnf >/dev/null 2>&1; then
+    install_fedora; enable_services
+  else
+    echo "Unsupported distro. Install the packages by hand and run: ./install.sh --configs-only"
+    exit 1
+  fi
+fi
 
 say "Copying configs (old ones are backed up as *.bak-$STAMP)"
 mkdir -p "$CFG"
@@ -50,13 +95,13 @@ done
 chmod +x "$CFG"/waybar/*.sh "$CFG"/waybar/*.py
 sed -i "s#\"source\": \".*\"#\"source\": \"$HOME/.config/fastfetch/logo.png\"#" "$CFG/fastfetch/config.jsonc"
 
+mkdir -p "$CFG/wallpaper"
+[ -f "$CFG/wallpaper/wallpaper.png" ] || echo "Put your wallpaper at ~/.config/wallpaper/wallpaper.png"
+
 if ! ls /sys/class/power_supply/BAT* >/dev/null 2>&1; then
   say "No battery found, removing the battery module"
   python3 -c 'import json,sys; p=sys.argv[1]; c=json.load(open(p)); c["modules-right"]=[m for m in c["modules-right"] if m!="battery"]; json.dump(c,open(p,"w"),indent=4)' "$CFG/waybar/config.jsonc"
 fi
-
-mkdir -p "$CFG/wallpaper"
-[ -f "$CFG/wallpaper/wallpaper.png" ] || echo "Put your wallpaper at ~/.config/wallpaper/wallpaper.png"
 
 say "Hyprland config"
 LUA="$CFG/hypr/hyprland.lua"
@@ -65,7 +110,10 @@ if command -v hyprctl >/dev/null 2>&1 && out="$(hyprctl monitors -j 2>/dev/null)
   move="$(python3 -c 'import json,sys; m=json.load(sys.stdin)[0]; print((m["width"]-260)//2, m["height"]-270)' <<<"$out" 2>/dev/null)" || move="830 810"
 fi
 
-if [ ! -f "$LUA" ]; then
+if [ -L "$LUA" ]; then
+  echo "$LUA is a symlink (managed by Nix or Home Manager?)."
+  echo "Add the contents of hypr/setup-block.lua to your Nix config by hand."
+elif [ ! -f "$LUA" ]; then
   echo "No $LUA found. You need Hyprland 0.55+ with a Lua config."
   echo "Add the contents of hypr/setup-block.lua to your config by hand."
 elif grep -q ">>> dotfiles-setup >>>" "$LUA"; then

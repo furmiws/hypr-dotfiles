@@ -88,3 +88,8 @@ window#waybar {
 #network.disabled {
     color: #6b6b6b;
 }
+
+#network:hover, #cpu:hover, #memory:hover, #disk:hover {
+    background: #ffffff;
+    color: #000000;
+}

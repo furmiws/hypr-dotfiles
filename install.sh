@@ -15,7 +15,7 @@ install_arch() {
   say "Installing packages (Arch)"
   sudo pacman -S --needed --noconfirm waybar playerctl ttf-jetbrains-mono-nerd kitty fuzzel mako \
     libnotify power-profiles-daemon bluez bluez-utils blueman networkmanager btop udisks2 \
-    fastfetch swaybg python git base-devel
+    fastfetch zsh starship swaybg python git base-devel
 
   say "Waybar workspace-click fix"
   if pacman -Q waybar-git >/dev/null 2>&1; then

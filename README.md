@@ -17,13 +17,48 @@ A minimal black and white Hyprland desktop: Waybar with popups, Fuzzel, Mako, Wo
 
 ## What's included
 
-- **Waybar** (bottom bar): workspaces 1-3, music title and controls, clock popup with calendar, volume, Bluetooth, Wi-Fi, CPU, RAM, storage and battery popups, and a power menu
-- **Fuzzel** app launcher (SUPER + D)
-- **Mako** notifications
-- **Wofi** styling for the popups
-- **Fastfetch** with a custom logo
-- **Hyprlock and Hypridle**: black lock screen (SUPER + L, or the power menu), locks after 5 minutes idle
-- Black window borders
+### The bar (bottom)
+
+| Where | What | Click it to... |
+|---|---|---|
+| Left | Workspaces 1-3 (always shown; others appear when used) | switch workspace |
+| Left | Music title, previous / play-pause / next (hidden when nothing plays) | click the title for the player card (cover, seek bar, shuffle, repeat, volume) |
+| Center | Clock, 24 hours | open a popup with seconds and a month calendar (Esc or q closes it) |
+| Right | Volume | mute / unmute |
+| Right | Bluetooth | turn on or off, scan, pair and connect devices, open the manager |
+| Right | Wi-Fi (shows a custom name; change it in `config.jsonc`) | turn on or off, scan, connect, type a password |
+| Right | CPU | open btop |
+| Right | RAM | list the 10 programs using the most memory |
+| Right | Storage | list internal and external drives, mount or unmount external ones |
+| Right | Battery | show the charge and switch power profiles (power saver, balanced, performance) |
+| Right | Power | lock, suspend, log out, reboot, shutdown |
+
+### The desktop
+
+- **Fuzzel**: app launcher, and the engine behind all the popup menus
+- **Mako**: notifications, top left
+- **Hyprlock and Hypridle**: black lock screen with a clock, locks after 5 minutes idle and before suspend
+- **Black window borders**
+- **Swaybg**: wallpaper (not included, see Wallpaper below)
+- **Fastfetch**: custom layout and logo, violet and white boxes
+- **Starship**: shell prompt with a paw, black and white
+- **Zsh**: the installer offers to make it your default shell
+
+### Keys
+
+| Key | Action |
+|---|---|
+| SUPER + D | app launcher |
+| SUPER + L | lock the screen |
+| SUPER + Y | confirm a Bluetooth pairing request (after checking the numbers match) |
+
+### The installer
+
+- Arch (pacman), Fedora (dnf), and NixOS (`--configs-only`)
+- Backs up your old configs as `*.bak-<date>` before replacing them
+- Removes the battery module on machines without a battery
+- Places the clock popup for your screen resolution
+- Adds its Hyprland lines to your `hyprland.lua` without touching the rest of it
 
 ## Requirements
 

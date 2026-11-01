@@ -178,5 +178,3 @@ The installer can't manage packages on NixOS, so install them in your Nix config
 If clicking workspaces doesn't work, your Waybar may not have the fix for Lua configs yet (Waybar PR #5013).
 
 To use zsh as your shell on NixOS, set `programs.zsh.enable = true;` and `users.users.<yourname>.shell = pkgs.zsh;` in your Nix config.
-
-To use zsh as your shell on NixOS, set `programs.zsh.enable = true;` and `users.users.<yourname>.shell = pkgs.zsh;` in your Nix config.

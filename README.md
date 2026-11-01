@@ -105,6 +105,27 @@ Open `~/.config/waybar/config.jsonc`:
 - **A popup shows nothing or fails**: check that `fuzzel` is installed, and run the script from a terminal, for example `~/.config/waybar/wifi-menu.sh`.
 - **Clicking workspaces does nothing**: see the notes above about `waybar-git`.
 
+## Fixes and known issues
+
+Things that broke while building this, and how they were fixed. Handy if you hit the same problem.
+
+- **Clicking workspaces does nothing.** The packaged Waybar can't send the workspace switch to a Hyprland with a Lua config (0.55+). *Fix:* install `waybar-git` from the AUR (the installer offers it). The upstream fix is Waybar PR #5013, so a newer packaged release should include it.
+- **Popup menus only showed their first line.** After a system update, wofi stopped drawing everything except the first entry. *Fix:* the popups now use Fuzzel through `~/.config/waybar/dmenu.sh`, which translates the old wofi-style options.
+- **The Wi-Fi module vanished when Wi-Fi was turned off.** The network module had no text for the "disabled" state, so Waybar drew nothing. *Fix:* `format-disabled` and the other state formats are set in `config.jsonc`.
+- **The Wi-Fi password box opened the app launcher.** Fuzzel's `--prompt-only` only becomes a password box together with `--dmenu`. Without it, whatever you type is run as a program name and the connection never gets the password. *Fix:* `--dmenu` is added in `dmenu.sh`.
+- **Bluetooth pairing fails with "incorrect PIN or passkey".** Blueman asks you to confirm the passkey in a notification with a Confirm button, but Mako doesn't draw buttons, so the laptop or pc never confirms. *Fix:* compare the number on both devices, then press **SUPER + Y** (it runs `makoctl invoke confirm`).
+- **Bluetooth: `br-connection-key-missing`.** One side kept an old pairing that the other side forgot. *Fix:* forget the device on both sides (in the phone's settings, and `bluetoothctl remove <address>` on the laptop), then pair again.
+- **Icons show as empty boxes.** The Nerd Font is missing or isn't picked up. *Fix:* install JetBrainsMono Nerd Font (`fc-list | grep -i jetbrains` to check). The icons in `config.jsonc` are written as `\uXXXX` codes on purpose, so they survive copy and paste. Waybar reads them fine.
+- **The clock popup flickered or showed duplicated lines.** It cleared the whole screen every second. *Fix:* it now redraws in place and erases the end of each line.
+- **Notifications were cut off.** Mako needs a width and height for long messages. *Fix:* set in `~/.config/mako/config`.
+- **The scripts didn't run on NixOS.** There is no `/bin/bash` there. *Fix:* the scripts start with `#!/usr/bin/env bash`.
+
+Known limitations:
+
+- The lock screen locks after 5 minutes idle, but it doesn't turn the screen off. Hyprland's Lua version changed how that command is written, so it's left out.
+- The popup positions are tuned for a 1920x1080 screen. See **Customizing** above to move them.
+- Fedora and NixOS are untested yet since i dont have another pc or laptop yet, but i will try my best to get one and test it.
+
 ## Other distros (untested)
 
 I use Arch, so these are best-effort and I haven't been able to test them. Issues and fixes are welcome.

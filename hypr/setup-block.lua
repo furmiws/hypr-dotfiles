@@ -42,4 +42,7 @@ end)
 
 hl.bind("SUPER + L", hl.dsp.exec_cmd("pidof hyprlock || hyprlock"))
 
+-- confirm a Bluetooth pairing request (after checking the numbers match)
+hl.bind("SUPER + Y", hl.dsp.exec_cmd("makoctl invoke confirm"))
+
 -- <<< dotfiles-setup <<<

@@ -5,7 +5,8 @@
     "spacing": 4,
     "reload_style_on_change": true,
     "modules-left": [
-        "hyprland/workspaces",
+        
+	"hyprland/workspaces",
         "mpris",
         "custom/prev",
         "custom/playpause",
@@ -22,7 +23,7 @@
         "memory",
         "disk",
         "battery",
-        "custom/power"
+	"custom/power",
     ],
     "hyprland/workspaces": {
         "format": "{id}",

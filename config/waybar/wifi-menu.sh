@@ -69,7 +69,10 @@ fi
 # new secured network: ask for the password
 pass=$($HOME/.config/waybar/dmenu.sh --dmenu --password --location 5 --xoffset "$XOFF" --width 320 --height 80 --prompt "Password for $ssid" </dev/null)
 [ -z "$pass" ] && exit
-if ! nmcli dev wifi connect "$ssid" password "$pass" >/dev/null 2>&1; then
+if out=$(nmcli dev wifi connect "$ssid" password "$pass" 2>&1); then
+  notify-send "Wi-Fi" "Connected to $ssid"
+else
+  printf '%s  %s\n' "$(date +%H:%M:%S)" "$out" >> /tmp/wifi-menu.log
   nmcli connection delete id "$ssid" >/dev/null 2>&1
-  msg "Wrong password or failed: $ssid"
+  notify-send "Wi-Fi" "$(printf '%s' "$out" | head -n1 | cut -c1-120)"
 fi

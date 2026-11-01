@@ -17,7 +17,7 @@ chars=$(( width / 10 ))
 lines=$(( height / 32 )); [ "$lines" -lt 1 ] && lines=1
 common=(--anchor=bottom-right --x-margin="$xm" --y-margin=36 --width="$chars" --lines="$lines" --font="JetBrainsMono Nerd Font:size=9" --background=000000ff --text-color=ffffffff --match-color=ffffffff --selection-color=ffffffff --selection-text-color=000000ff --selection-match-color=000000ff --border-color=ffffffff --border-width=2 --border-radius=8 --horizontal-pad=10 --vertical-pad=8 --inner-pad=4)
 if [ "$pw" = 1 ]; then
-  exec fuzzel --prompt-only="$prompt" --password "${common[@]}"
+  exec fuzzel --dmenu --prompt-only="$prompt" --password --namespace=password "${common[@]}" --lines=0
 else
   exec fuzzel --dmenu --hide-prompt --mesg="${prompt% }" "${common[@]}"
 fi

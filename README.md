@@ -176,3 +176,7 @@ The installer can't manage packages on NixOS, so install them in your Nix config
 3. If your `hyprland.lua` is managed by Home Manager (a read-only symlink), the installer skips it. Copy the contents of `hypr/setup-block.lua` into your Nix config instead. Home Manager 26.05 and newer can generate Lua configs; see the [NixOS wiki page for Hyprland](https://wiki.nixos.org/wiki/Hyprland).
 
 If clicking workspaces doesn't work, your Waybar may not have the fix for Lua configs yet (Waybar PR #5013).
+
+To use zsh as your shell on NixOS, set `programs.zsh.enable = true;` and `users.users.<yourname>.shell = pkgs.zsh;` in your Nix config.
+
+To use zsh as your shell on NixOS, set `programs.zsh.enable = true;` and `users.users.<yourname>.shell = pkgs.zsh;` in your Nix config.

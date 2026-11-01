@@ -40,7 +40,7 @@ install_arch() {
 install_fedora() {
   say "Installing packages (Fedora)"
   sudo dnf install -y waybar playerctl kitty fuzzel mako libnotify power-profiles-daemon \
-    bluez blueman NetworkManager btop udisks2 fastfetch swaybg python3 git curl unzip fontconfig
+    bluez blueman NetworkManager btop udisks2 fastfetch zsh swaybg python3 git curl unzip fontconfig
   sudo dnf install -y hyprlock hypridle || echo "Install hyprlock and hypridle from your Hyprland COPR."
 
   if ! fc-list | grep -qi "JetBrainsMono Nerd"; then
@@ -109,6 +109,60 @@ for f in hyprlock.conf hypridle.conf; do
   [ -f "$CFG/hypr/$f" ] && cp "$CFG/hypr/$f" "$CFG/hypr/$f.bak-$STAMP"
   cp "$DIR/hypr/$f" "$CFG/hypr/$f"
 done
+
+if command -v zsh >/dev/null 2>&1 && [ "$ONLY_CONFIGS" = 0 ] && ! grep -qi '^ID=nixos' /etc/os-release 2>/dev/null; then
+  say "Zsh"
+  if [ ! -f "$HOME/.zshrc" ]; then
+    cat > "$HOME/.zshrc" << 'ZRC'
+# history
+HISTFILE=~/.zsh_history
+HISTSIZE=5000
+SAVEHIST=5000
+setopt SHARE_HISTORY HIST_IGNORE_DUPS
+
+# completion
+autoload -Uz compinit && compinit
+
+# prompt
+eval "$(starship init zsh)"
+ZRC
+    echo "Created a basic ~/.zshrc"
+  fi
+  if [ "$(basename "${SHELL:-}")" != "zsh" ]; then
+    read -rp "Make zsh your default shell? [Y/n] " ans
+    if [[ ! "$ans" =~ ^[Nn]$ ]]; then
+      chsh -s "$(command -v zsh)" || echo "Could not change the shell. Run: chsh -s $(command -v zsh)"
+      echo "Log out and back in for the new shell to take effect."
+    fi
+  fi
+fi
+
+if command -v zsh >/dev/null 2>&1 && [ "$ONLY_CONFIGS" = 0 ] && ! grep -qi '^ID=nixos' /etc/os-release 2>/dev/null; then
+  say "Zsh"
+  if [ ! -f "$HOME/.zshrc" ]; then
+    cat > "$HOME/.zshrc" << 'ZRC'
+# history
+HISTFILE=~/.zsh_history
+HISTSIZE=5000
+SAVEHIST=5000
+setopt SHARE_HISTORY HIST_IGNORE_DUPS
+
+# completion
+autoload -Uz compinit && compinit
+
+# prompt
+eval "$(starship init zsh)"
+ZRC
+    echo "Created a basic ~/.zshrc"
+  fi
+  if [ "$(basename "${SHELL:-}")" != "zsh" ]; then
+    read -rp "Make zsh your default shell? [Y/n] " ans
+    if [[ ! "$ans" =~ ^[Nn]$ ]]; then
+      chsh -s "$(command -v zsh)" || echo "Could not change the shell. Run: chsh -s $(command -v zsh)"
+      echo "Log out and back in for the new shell to take effect."
+    fi
+  fi
+fi
 
 say "Hyprland config"
 LUA="$CFG/hypr/hyprland.lua"
